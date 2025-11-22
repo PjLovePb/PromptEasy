@@ -1,0 +1,325 @@
+/* AIChatHelper Sidebar Styles */
+
+:root {
+  --aichathelper-primary: #10a37f;
+  --aichathelper-primary-dark: #0d8c6f;
+  --aichathelper-bg: #ffffff;
+  --aichathelper-border: #e5e5e5;
+  --aichathelper-text: #333333;
+  --aichathelper-text-light: #666666;
+  --aichathelper-hover: #f5f5f5;
+  --aichathelper-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --aichathelper-highlight: #fff3cd;
+}
+
+/* 侧边栏容器 */
+#aichathelper-sidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: var(--aichathelper-bg);
+  border-left: 1px solid var(--aichathelper-border);
+  box-shadow: var(--aichathelper-shadow);
+  display: flex;
+  flex-direction: column;
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  color: var(--aichathelper-text);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 收起状态 */
+#aichathelper-sidebar.collapsed {
+  width: 40px;
+  animation: slideOut 0.3s ease-out;
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* 侧边栏头部 */
+.aichathelper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--aichathelper-border);
+  background-color: #f9f9f9;
+  flex-shrink: 0;
+}
+
+.aichathelper-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--aichathelper-text);
+}
+
+.aichathelper-icon {
+  font-size: 18px;
+}
+
+.aichathelper-name {
+  white-space: nowrap;
+}
+
+#aichathelper-sidebar.collapsed .aichathelper-name {
+  display: none;
+}
+
+/* 切换按钮 */
+.aichathelper-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 16px;
+  color: var(--aichathelper-text-light);
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aichathelper-toggle:hover {
+  color: var(--aichathelper-primary);
+}
+
+/* 侧边栏内容区域 */
+.aichathelper-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+
+.aichathelper-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.aichathelper-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.aichathelper-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.aichathelper-content::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* 消息列表 */
+.aichathelper-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* 消息项 */
+.aichathelper-message-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-left-color 0.2s;
+  border-left: 3px solid transparent;
+  user-select: none;
+}
+
+.aichathelper-message-item:hover {
+  background-color: var(--aichathelper-hover);
+}
+
+.aichathelper-message-item.active {
+  background-color: #e8f5e9;
+  border-left-color: var(--aichathelper-primary);
+}
+
+/* 消息编号 */
+.aichathelper-message-number {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--aichathelper-primary);
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.aichathelper-message-item.active .aichathelper-message-number {
+  background-color: var(--aichathelper-primary-dark);
+}
+
+/* 消息文本 */
+.aichathelper-message-text {
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  color: var(--aichathelper-text);
+  line-height: 1.4;
+  font-size: 13px;
+}
+
+.aichathelper-message-item:hover .aichathelper-message-text {
+  color: var(--aichathelper-primary);
+}
+
+#aichathelper-sidebar.collapsed .aichathelper-message-text {
+  display: none;
+}
+
+/* 空状态 */
+.aichathelper-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: var(--aichathelper-text-light);
+  font-size: 13px;
+}
+
+/* 加载状态 */
+.aichathelper-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: var(--aichathelper-text-light);
+  font-size: 13px;
+}
+
+.aichathelper-loading::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 8px;
+  border: 2px solid var(--aichathelper-border);
+  border-top-color: var(--aichathelper-primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 侧边栏底部 */
+.aichathelper-footer {
+  padding: 8px 12px;
+  border-top: 1px solid var(--aichathelper-border);
+  background-color: #f9f9f9;
+  font-size: 11px;
+  color: var(--aichathelper-text-light);
+  flex-shrink: 0;
+}
+
+#aichathelper-sidebar.collapsed .aichathelper-footer {
+  display: none;
+}
+
+/* 高亮效果（页面上的消息高亮） */
+.aichathelper-highlighted {
+  animation: highlight 0.6s ease-out;
+}
+
+@keyframes highlight {
+  0% {
+    background-color: var(--aichathelper-highlight) !important;
+  }
+  100% {
+    background-color: transparent !important;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  #aichathelper-sidebar {
+    width: 250px;
+  }
+
+  .aichathelper-message-item {
+    padding: 8px 10px;
+  }
+
+  .aichathelper-header {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  #aichathelper-sidebar {
+    width: 200px;
+  }
+
+  .aichathelper-message-number {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .aichathelper-message-text {
+    font-size: 12px;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  #aichathelper-sidebar {
+    --aichathelper-bg: #1e1e1e;
+    --aichathelper-border: #404040;
+    --aichathelper-text: #e0e0e0;
+    --aichathelper-text-light: #a0a0a0;
+    --aichathelper-hover: #2a2a2a;
+    --aichathelper-highlight: #3a3a00;
+  }
+
+  .aichathelper-header {
+    background-color: #2a2a2a;
+  }
+
+  .aichathelper-footer {
+    background-color: #2a2a2a;
+  }
+
+  .aichathelper-message-item.active {
+    background-color: #1a3a1a;
+  }
+}

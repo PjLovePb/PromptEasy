@@ -1,0 +1,71 @@
+{
+  "manifest_version": 3,
+  "name": "AIChatHelper",
+  "version": "1.0.0",
+  "description": "快速导航 AI Chat 对话历史。在侧边栏显示用户提问列表，点击即可快速滚动到对应位置。",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://chat.openai.com/*",
+    "https://chatgpt.com/*",
+    "https://gemini.google.com/*",
+    "https://claude.ai/*",
+    "https://chat.deepseek.com/*",
+    "https://doubao.com/*",
+    "https://*.openai.com/*",
+    "https://*.google.com/*",
+    "https://*.anthropic.com/*",
+    "https://*.deepseek.com/*",
+    "https://*.doubao.com/*"
+  ],
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_title": "AIChatHelper - 快速导航对话历史",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*",
+        "https://gemini.google.com/*",
+        "https://claude.ai/*",
+        "https://chat.deepseek.com/*",
+        "https://doubao.com/*",
+        "https://*.openai.com/*",
+        "https://*.google.com/*",
+        "https://*.anthropic.com/*",
+        "https://*.deepseek.com/*",
+        "https://*.doubao.com/*"
+      ],
+      "js": [
+        "src/lib/platformDetector.js",
+        "src/lib/messageExtractor.js",
+        "src/lib/sidebarManager.js",
+        "src/content.js"
+      ],
+      "css": [
+        "src/styles/sidebar.css"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/config/platforms.json", "src/styles/sidebar.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

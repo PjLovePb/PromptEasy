@@ -1,0 +1,92 @@
+{
+  "platforms": {
+    "chatgpt": {
+      "name": "ChatGPT",
+      "urls": ["chat.openai.com", "chatgpt.com"],
+      "selectors": {
+        "userMessage": "[data-message-author-role=\"user\"], div[data-message-author-role=\"user\"], div[data-testid=\"conversation-turn-user\"]",
+        "assistantMessage": "[data-message-author-role=\"assistant\"], div[data-message-author-role=\"assistant\"], div[data-testid=\"conversation-turn-assistant\"]",
+        "messageContent": ".whitespace-pre-wrap, .markdown, .prose, .text-message, .message-content, div:first-child",
+        "scrollContainer": "main",
+        "fallbackSelectors": {
+          "userMessage": [
+            ".user-message",
+            "[data-role=\"user\"]",
+            ".message-user",
+            "article[data-testid=\"chat-turn\"] [data-message-author-role=\"user\"]",
+            "[data-testid=\"user-message\"]"
+          ],
+          "assistantMessage": [
+            ".assistant-message",
+            "[data-role=\"assistant\"]",
+            ".message-assistant",
+            "article[data-testid=\"chat-turn\"] [data-message-author-role=\"assistant\"]",
+            "[data-testid=\"assistant-response\"]"
+          ]
+        }
+      }
+    },
+    "gemini": {
+      "name": "Google Gemini",
+      "urls": ["gemini.google.com"],
+      "selectors": {
+        "userMessage": "[data-role=\"user\"]",
+        "assistantMessage": "[data-role=\"assistant\"]",
+        "messageContent": ".message-content, [role=\"article\"]",
+        "scrollContainer": "body",
+        "fallbackSelectors": {
+          "userMessage": [".user-message", "[role=\"user\"]", ".message-user"],
+          "assistantMessage": [".assistant-message", "[role=\"assistant\"]", ".message-assistant"]
+        }
+      }
+    },
+    "claude": {
+      "name": "Anthropic Claude",
+      "urls": ["claude.ai"],
+      "selectors": {
+        "userMessage": ".user-message",
+        "assistantMessage": ".assistant-message",
+        "messageContent": ".message-text, [role=\"article\"]",
+        "scrollContainer": "main",
+        "fallbackSelectors": {
+          "userMessage": ["[data-role=\"user\"]", "[role=\"user\"]"],
+          "assistantMessage": ["[data-role=\"assistant\"]", "[role=\"assistant\"]"]
+        }
+      }
+    },
+    "deepseek": {
+      "name": "DeepSeek",
+      "urls": ["chat.deepseek.com"],
+      "selectors": {
+        "userMessage": "[data-sender=\"user\"]",
+        "assistantMessage": "[data-sender=\"assistant\"]",
+        "messageContent": ".ds-message-content, .message-content",
+        "scrollContainer": "body",
+        "fallbackSelectors": {
+          "userMessage": [".user-message", "[role=\"user\"]"],
+          "assistantMessage": [".assistant-message", "[role=\"assistant\"]"]
+        }
+      }
+    },
+    "doubao": {
+      "name": "字节豆包",
+      "urls": ["doubao.com"],
+      "selectors": {
+        "userMessage": "[data-type=\"user\"]",
+        "assistantMessage": "[data-type=\"assistant\"]",
+        "messageContent": ".message-body, .message-content",
+        "scrollContainer": "body",
+        "fallbackSelectors": {
+          "userMessage": [".message-item[data-type=\"user\"]", ".user-message"],
+          "assistantMessage": [".message-item[data-type=\"assistant\"]", ".assistant-message"]
+        }
+      }
+    }
+  },
+  "defaultConfig": {
+    "messagePreviewLength": 50,
+    "sidebarWidth": 300,
+    "animationDuration": 300,
+    "debounceDelay": 500
+  }
+}
