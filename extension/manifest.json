@@ -5,7 +5,6 @@
   "description": "快速导航 AI Chat 对话历史。在侧边栏显示用户提问列表，点击即可快速滚动到对应位置。",
   "permissions": [
     "activeTab",
-    "scripting",
     "storage"
   ],
   "host_permissions": [
