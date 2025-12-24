@@ -100,12 +100,28 @@ class PlatformDetector {
           "name": "字节豆包",
           "urls": ["doubao.com"],
           "selectors": {
-            "userMessage": "[data-type=\"user\"]",
-            "assistantMessage": "[data-type=\"assistant\"]",
-            "messageContent": ".message-body, .message-content",
+            "userMessage": ".user-message",
+            "assistantMessage": ".assistant-message",
+            "messageContent": ".message-content",
+            "scrollContainer": "body"
+          }
+        },
+        "aistudio": {
+          "name": "Google AI Studio",
+          "urls": ["aistudio.google.com"],
+          "selectors": {
+            "userMessage": ".chat-turn-container.user",
+            "assistantMessage": ".chat-turn-container.model",
+            "messageContent": ".turn-content",
             "scrollContainer": "body"
           }
         }
+      },
+      "defaultConfig": {
+        "messagePreviewLength": 50,
+        "sidebarWidth": 300,
+        "animationDuration": 300,
+        "debounceDelay": 500
       }
     };
   }
@@ -129,12 +145,16 @@ class PlatformDetector {
             key: platformKey,
             ...platformConfig
           };
+          // 为body元素添加平台标识，用于应用平台特定样式
+          document.body.setAttribute('data-platform', platformKey);
           console.log(`Detected platform: ${platformKey}`);
           return this.currentPlatform;
         }
       }
     }
 
+    // 移除data-platform属性（如果不是支持的平台）
+    document.body.removeAttribute('data-platform');
     console.warn('Unknown platform');
     return null;
   }

@@ -1,5 +1,6 @@
 /* AIChatHelper Sidebar Styles */
 
+/* 全局样式变量 */
 :root {
   --aichathelper-primary: #10a37f;
   --aichathelper-primary-dark: #0d8c6f;
@@ -322,4 +323,34 @@
   .aichathelper-message-item.active {
     background-color: #1a3a1a;
   }
+}
+
+/* Google AI Studio 平台特定样式 */
+body[data-platform="aistudio"] #aichathelper-sidebar {
+  /* 确保侧边栏不会与Google AI Studio的UI冲突 */
+  z-index: 999999;
+  width: 320px; /* AI Studio平台侧边栏稍宽一些 */
+}
+
+/* AI Studio平台的消息列表项样式调整 */
+body[data-platform="aistudio"] .aichathelper-message-item {
+  padding: 10px 12px;
+  border-radius: 6px;
+}
+
+/* AI Studio平台的滚动容器调整 */
+body[data-platform="aistudio"] .aichathelper-messages-container {
+  padding-bottom: 20px;
+}
+
+/* 确保在AI Studio平台上侧边栏切换按钮可见 */
+body[data-platform="aistudio"] .aichathelper-toggle {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+body[data-platform="aistudio"] .aichathelper-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: var(--aichathelper-primary);
 }
