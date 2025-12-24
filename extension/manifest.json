@@ -52,6 +52,9 @@
         "https://*.doubao.com/*"
       ],
       "js": [
+        "src/lib/platformDetector.js",
+        "src/lib/messageExtractor.js",
+        "src/lib/sidebarManager.js",
         "src/content.js"
       ],
       "css": [
