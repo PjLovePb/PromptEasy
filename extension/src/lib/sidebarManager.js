@@ -28,15 +28,15 @@ class SidebarManager {
       <div class="aichathelper-header">
         <div class="aichathelper-title">
           <span class="aichathelper-icon">💬</span>
-          <span class="aichathelper-name">对话历史</span>
+          <span class="aichathelper-name">${chrome.i18n.getMessage('sidebarTitle')}</span>
         </div>
-        <button class="aichathelper-toggle" title="收起/展开">
+        <button class="aichathelper-toggle" title="${chrome.i18n.getMessage('toggleTooltip')}">
           <span class="aichathelper-toggle-icon">−</span>
         </button>
       </div>
       <div class="aichathelper-content">
         <div class="aichathelper-messages">
-          <div class="aichathelper-loading">加载中...</div>
+          <div class="aichathelper-loading">${chrome.i18n.getMessage('loadingText')}</div>
         </div>
       </div>
       <div class="aichathelper-footer">
@@ -91,11 +91,11 @@ class SidebarManager {
     // 更新平台名称
     const platformSpan = this.sidebarElement.querySelector('.aichathelper-platform');
     if (platformSpan) {
-      platformSpan.textContent = `平台: ${platformName}`;
+      platformSpan.textContent = chrome.i18n.getMessage('platformText', [platformName]);
     }
 
     if (messages.length === 0) {
-      messagesContainer.innerHTML = '<div class="aichathelper-empty">暂无消息</div>';
+      messagesContainer.innerHTML = `<div class="aichathelper-empty">${chrome.i18n.getMessage('emptyMessages')}</div>`;
       return;
     }
 
@@ -237,7 +237,7 @@ class SidebarManager {
       '"': '&quot;',
       "'": '&#039;'
     };
-    return text.replace(/[&<>"']/g, (m) => map[m]);
+    return text.replace(/[&<>'"]/g, (m) => map[m]);
   }
 
   /**

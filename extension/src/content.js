@@ -1,23 +1,23 @@
 /**
  * Content Script - Main Entry Point
- * 扩展的主要逻辑入口，协调各个模块
+ * Main logic entry for the extension, coordinating various modules
  */
 
 (async () => {
   try {
-    console.log('[AIChatHelper] 插件初始化...');
+    console.log('[AIChatHelper] Initializing plugin...');
     
-    // 检查是否为Google AI Studio平台
+    // Check if it's Google AI Studio platform
     const isAIStudio = window.location.hostname.includes('aistudio.google.com');
     
     if (isAIStudio) {
-      console.log('[AIChatHelper] 检测到Google AI Studio平台，使用专用逻辑');
+      console.log('[AIChatHelper] Detected Google AI Studio platform, using dedicated logic');
       
-      // Google AI Studio 专用逻辑
+      // Google AI Studio dedicated logic
       const DIALOGUE_SELECTOR = '.chat-turn-container';
       const SCROLLBAR_SELECTOR = 'ms-prompt-scrollbar';
       
-      // 等待元素出现
+      // Wait for elements to appear
       function waitForElements(selector, timeout = 15000) {
         return new Promise((resolve) => {
           const checkInterval = 500;
@@ -26,7 +26,7 @@
 
           const check = () => {
             const elements = document.querySelectorAll(selector);
-            console.log(`[AI Studio Navigator] 找到 ${elements.length} 个 ${selector} 元素`);
+            console.log(`[AI Studio Navigator] Found ${elements.length} ${selector} elements`);
             
             if (elements.length > 0) {
               resolve(elements);
@@ -42,11 +42,11 @@
         });
       }
 
-      // 从 scrollbar 中提取用户消息（aria-label）
+      // Extract user messages from scrollbar (aria-label)
       function extractUserMessagesFromScrollbar() {
         const scrollbar = document.querySelector(SCROLLBAR_SELECTOR);
         if (!scrollbar) {
-          console.log('[AI Studio Navigator] 未找到 prompt-scrollbar');
+          console.log('[AI Studio Navigator] Could not find prompt-scrollbar');
           return [];
         }
         
@@ -56,9 +56,9 @@
         buttons.forEach((button, index) => {
           const ariaLabel = button.getAttribute('aria-label');
           if (ariaLabel && ariaLabel.trim().length > 0) {
-            // 过滤掉系统按钮（如 "Good response", "Bad response" 等）
+            // Filter out system buttons (like "Good response", "Bad response", etc.)
             if (!ariaLabel.match(/^(Good response|Bad response|Rerun|Open options|More options)/i)) {
-              console.log(`[AI Studio Navigator] 从 scrollbar 提取用户消息 ${index}: ${ariaLabel.substring(0, 50)}...`);
+              console.log(`[AI Studio Navigator] Extracted user message ${index} from scrollbar: ${ariaLabel.substring(0, 50)}...`);
               userMessages.push(ariaLabel.trim());
             }
           }
@@ -67,66 +67,66 @@
         return userMessages;
       }
 
-      // 提取对话内容
+      // Extract dialogue content
       async function extractDialogue() {
-        console.log('[AI Studio Navigator] 开始提取对话...');
+        console.log('[AI Studio Navigator] Starting to extract dialogue...');
         
-        // 等待对话元素加载
-        console.log('[AI Studio Navigator] 等待对话元素加载...');
+        // Wait for dialogue elements to load
+        console.log('[AI Studio Navigator] Waiting for dialogue elements to load...');
         const chatTurns = await waitForElements(DIALOGUE_SELECTOR);
         
-        console.log(`[AI Studio Navigator] 找到 ${chatTurns.length} 个对话轮次`);
+        console.log(`[AI Studio Navigator] Found ${chatTurns.length} dialogue turns`);
         
         if (chatTurns.length === 0) {
-          console.log('[AI Studio Navigator] 未找到对话内容');
+          console.log('[AI Studio Navigator] Could not find dialogue content');
           return [];
         }
         
-        // 从 scrollbar 提取用户消息
+        // Extract user messages from scrollbar
         const userMessages = extractUserMessagesFromScrollbar();
-        console.log(`[AI Studio Navigator] 从 scrollbar 提取了 ${userMessages.length} 条用户消息`);
+        console.log(`[AI Studio Navigator] Extracted ${userMessages.length} user messages from scrollbar`);
         
         const dialogues = [];
         let userMessageIndex = 0;
         
         chatTurns.forEach((turn, index) => {
           try {
-            // 通过类名判断角色
+            // Determine role by class name
             const classList = turn.className;
             let role = 'unknown';
             let text = '';
             
             if (classList.includes('user')) {
               role = 'user';
-              // 从 scrollbar 的 aria-label 中获取用户消息
+              // Get user message from scrollbar's aria-label
               if (userMessageIndex < userMessages.length) {
                 text = userMessages[userMessageIndex];
                 userMessageIndex++;
               } else {
-                console.log(`[AI Studio Navigator] 跳过对话 ${index}：用户消息索引超出范围`);
+                console.log(`[AI Studio Navigator] Skipping dialogue ${index}: User message index out of range`);
                 return;
               }
             } else if (classList.includes('model')) {
               role = 'ai';
-              // AI 消息从 turn-content 中提取
+              // Get AI message from turn-content
               const turnContent = turn.querySelector('.turn-content');
               if (!turnContent) {
-                console.log(`[AI Studio Navigator] 跳过对话 ${index}：未找到 turn-content`);
+                console.log(`[AI Studio Navigator] Skipping dialogue ${index}: Could not find turn-content`);
                 return;
               }
               text = turnContent.textContent.trim();
-              // 移除角色标签
+              // Remove role labels
               text = text.replace(/^(User|Model)\s*/i, '').trim();
-              // 移除"Thoughts"等标签
+              // Remove "Thoughts" and other labels
               text = text.replace(/^Thoughts\s*/i, '').trim();
             }
             
             if (!text || text.length < 2) {
-              console.log(`[AI Studio Navigator] 跳过对话 ${index}：文本为空 (role: ${role})`);
+              console.log(`[AI Studio Navigator] Skipping dialogue ${index}: Text is empty (role: ${role})`);
               return;
             }
             
-            console.log(`[AI Studio Navigator] 提取对话 ${index}: ${role} - ${text.substring(0, 50)}...`);
+            console.log(`[AI Studio Navigator] Extracted dialogue ${index}: ${role} - ${text.substring(0, 50)}...`);
             
             dialogues.push({
               role: role,
@@ -134,35 +134,35 @@
               element: turn
             });
           } catch (error) {
-            console.error(`[AI Studio Navigator] 提取对话 ${index} 时出错:`, error);
+            console.error(`[AI Studio Navigator] Error extracting dialogue ${index}:`, error);
           }
         });
         
-        console.log(`[AI Studio Navigator] 成功提取 ${dialogues.length} 条对话`);
+        console.log(`[AI Studio Navigator] Successfully extracted ${dialogues.length} dialogues`);
         return dialogues;
       }
 
-      // 创建侧边栏
+      // Create sidebar
       function createSidebar(dialogues) {
-        // 检查是否已存在侧边栏
+        // Check if sidebar already exists
         let sidebar = document.getElementById('ai-studio-navigator-sidebar');
         if (sidebar) {
           sidebar.remove();
         }
         
-        // 创建侧边栏容器
+        // Create sidebar container
         sidebar = document.createElement('div');
         sidebar.id = 'ai-studio-navigator-sidebar';
         sidebar.innerHTML = `
           <div class="sidebar-header">
-            <h3>对话导航</h3>
+            <h3>${chrome.i18n.getMessage('sidebarNavTitle')}</h3>
             <button class="close-btn" id="close-sidebar">×</button>
           </div>
           <div class="sidebar-content" id="sidebar-content">
           </div>
         `;
         
-        // 添加样式
+        // Add styles
         const style = document.createElement('style');
         style.textContent = `
           #ai-studio-navigator-sidebar {
@@ -280,17 +280,17 @@
         
         document.head.appendChild(style);
         
-        // 添加对话项
+        // Add dialogue items
         const content = sidebar.querySelector('#sidebar-content');
         dialogues.forEach((dialogue, index) => {
           const item = document.createElement('div');
           item.className = `dialogue-item ${dialogue.role}`;
           item.innerHTML = `
-            <div class="dialogue-role">${dialogue.role === 'user' ? 'User' : 'AI'}</div>
+            <div class="dialogue-role">${dialogue.role === 'user' ? chrome.i18n.getMessage('userRole') : chrome.i18n.getMessage('aiRole')}</div>
             <div class="dialogue-text">${dialogue.text.substring(0, 30)}${dialogue.text.length > 30 ? '...' : ''}</div>
           `;
           
-          // 点击跳转到对应对话
+          // Click to jump to corresponding dialogue
           item.addEventListener('click', () => {
             dialogue.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
             dialogue.element.classList.add('highlight');
@@ -300,33 +300,33 @@
           content.appendChild(item);
         });
         
-        // 关闭按钮
+        // Close button
         sidebar.querySelector('#close-sidebar').addEventListener('click', () => {
           sidebar.remove();
         });
         
         document.body.appendChild(sidebar);
-        console.log('[AI Studio Navigator] 侧边栏已创建');
+        console.log('[AI Studio Navigator] Sidebar created');
       }
 
-      // 主函数
+      // Main function
       async function init() {
         try {
           const dialogues = await extractDialogue();
           
           if (dialogues.length === 0) {
-            console.log('[AI Studio Navigator] 未找到对话内容');
+            console.log('[AI Studio Navigator] Could not find dialogue content');
             return;
           }
           
           createSidebar(dialogues);
-          console.log('[AI Studio Navigator] 初始化完成！');
+          console.log('[AI Studio Navigator] Initialization complete!');
         } catch (error) {
-          console.error('[AI Studio Navigator] 初始化失败:', error);
+          console.error('[AI Studio Navigator] Initialization failed:', error);
         }
       }
 
-      // 监听来自 popup 的消息
+      // Listen for messages from popup
       chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (request.action === 'reload') {
           init();
@@ -334,26 +334,26 @@
         }
       });
 
-      // 监听 URL 变化（用于检测对话切换）
+      // Listen for URL changes (to detect dialogue switching)
       let lastUrl = location.href;
       const urlObserver = new MutationObserver(() => {
         const currentUrl = location.href;
         if (currentUrl !== lastUrl) {
-          console.log('[AI Studio Navigator] URL 变化，重新加载对话...');
+          console.log('[AI Studio Navigator] URL changed, reloading dialogue...');
           lastUrl = currentUrl;
-          // 延迟一下，等待新对话加载
+          // Delay a bit to wait for new dialogue to load
           setTimeout(init, 1000);
         }
       });
 
-      // 监听 DOM 变化（用于检测新消息）
+      // Listen for DOM changes (to detect new messages)
       const domObserver = new MutationObserver((mutations) => {
-        // 检查是否有新的对话轮次添加
+        // Check if any new dialogue turns were added
         for (const mutation of mutations) {
           if (mutation.addedNodes.length > 0) {
             for (const node of mutation.addedNodes) {
               if (node.nodeType === 1 && node.classList && node.classList.contains('chat-turn-container')) {
-                console.log('[AI Studio Navigator] 检测到新对话，重新加载...');
+                console.log('[AI Studio Navigator] Detected new dialogue, reloading...');
                 setTimeout(init, 500);
                 return;
               }
@@ -362,17 +362,17 @@
         }
       });
 
-      // 页面加载完成后初始化
+      // Initialize after page loads
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
           init();
-          // 开始监听
+          // Start listening
           urlObserver.observe(document.querySelector('head > title'), { childList: true });
           domObserver.observe(document.body, { childList: true, subtree: true });
         });
       } else {
         init();
-        // 开始监听
+        // Start listening
         urlObserver.observe(document.querySelector('head > title'), { childList: true });
         domObserver.observe(document.body, { childList: true, subtree: true });
       }
@@ -380,10 +380,10 @@
       return;
     }
     
-    // 其他平台使用通用逻辑
-    console.log('[AIChatHelper] 检测到非Google AI Studio平台，使用通用逻辑');
+    // Other platforms use general logic
+    console.log('[AIChatHelper] Detected non-Google AI Studio platform, using general logic');
     
-    // 1. 初始化平台检测器
+    // 1. Initialize platform detector
     if (!window.platformDetector) {
       console.error('Platform detector not loaded');
       return;
@@ -397,33 +397,33 @@
       return;
     }
 
-    console.log(`[AIChatHelper] 初始化完成，当前平台: ${platform.name}`);
+    console.log(`[AIChatHelper] Initialization complete, current platform: ${platform.name}`);
 
-    // 2. 初始化消息提取器
+    // 2. Initialize message extractor
     if (!window.messageExtractor) {
       window.messageExtractor = new MessageExtractor(window.platformDetector);
     }
 
-    // 3. 初始化侧边栏管理器
+    // 3. Initialize sidebar manager
     if (!window.sidebarManager) {
       window.sidebarManager = new SidebarManager(window.messageExtractor, window.platformDetector);
     }
 
-    // 4. 创建侧边栏
+    // 4. Create sidebar
     window.sidebarManager.createSidebar();
 
-    // 5. 初始提取消息
+    // 5. Initial message extraction
     window.messageExtractor.extractMessages();
     window.sidebarManager.updateSidebar();
 
-    // 6. 恢复侧边栏可见性状态
+    // 6. Restore sidebar visibility state
     chrome.storage.local.get(['sidebarVisible'], (result) => {
       if (result.sidebarVisible === false) {
         window.sidebarManager.hide();
       }
     });
 
-    // 7. 监听 DOM 变化，自动更新消息列表
+    // 7. Listen for DOM changes to automatically update message list
     const observer = new MutationObserver(() => {
       if (window.messageExtractor.shouldRefresh()) {
         window.sidebarManager.refresh();
@@ -437,7 +437,7 @@
       attributes: false
     });
 
-    // 8. 监听来自 popup 的消息
+    // 8. Listen for messages from popup
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.action === 'toggleSidebar') {
         window.sidebarManager.toggleSidebar();
@@ -454,21 +454,21 @@
       }
     });
 
-    // 9. 定期刷新消息（每 5 秒检查一次）
+    // 9. Periodically refresh messages (check every 5 seconds)
     setInterval(() => {
       if (window.messageExtractor.shouldRefresh()) {
         window.sidebarManager.refresh();
       }
     }, 5000);
 
-    // 10. 页面卸载时清理
+    // 10. Cleanup when page unloads
     window.addEventListener('beforeunload', () => {
       observer.disconnect();
       window.sidebarManager.destroy();
     });
 
-    console.log('[AIChatHelper] 初始化完成！');
+    console.log('[AIChatHelper] Initialization complete!');
   } catch (error) {
-    console.error('[AIChatHelper] 初始化失败:', error);
+    console.error('[AIChatHelper] Initialization failed:', error);
   }
 })();

@@ -1,0 +1,128 @@
+{
+  "extName": {
+    "message": "AIChatHelper",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Quickly navigate AI Chat conversation history. Displays a list of user questions in a sidebar, click to jump to the corresponding position.",
+    "description": "Extension description"
+  },
+  "extTitle": {
+    "message": "AIChatHelper - Quick Navigation",
+    "description": "Extension title"
+  },
+  "popupTitle": {
+    "message": "AIChatHelper",
+    "description": "Popup window title"
+  },
+  "platformLabel": {
+    "message": "Platform:",
+    "description": "Label for platform information"
+  },
+  "messagesLabel": {
+    "message": "Messages:",
+    "description": "Label for message count"
+  },
+  "statusLabel": {
+    "message": "Status:",
+    "description": "Label for sidebar status"
+  },
+  "detecting": {
+    "message": "Detecting...",
+    "description": "Text displayed when detecting platform"
+  },
+  "hideSidebar": {
+    "message": "Hide Sidebar",
+    "description": "Button text to hide sidebar"
+  },
+  "showSidebar": {
+    "message": "Show Sidebar",
+    "description": "Button text to show sidebar"
+  },
+  "refreshMessages": {
+    "message": "Refresh Messages",
+    "description": "Button text to refresh messages"
+  },
+  "usageTitle": {
+    "message": "Usage",
+    "description": "Title for usage section"
+  },
+  "usage1": {
+    "message": "Automatically displays sidebar on supported AI Chat pages",
+    "description": "First usage instruction"
+  },
+  "usage2": {
+    "message": "Click on questions in the list to quickly jump to conversation",
+    "description": "Second usage instruction"
+  },
+  "usage3": {
+    "message": "Supports ChatGPT, Gemini, Claude and other platforms",
+    "description": "Third usage instruction"
+  },
+  "usage4": {
+    "message": "Sidebar can be collapsed to save space",
+    "description": "Fourth usage instruction"
+  },
+  "tipTitle": {
+    "message": "Tip:",
+    "description": "Title for tip section"
+  },
+  "tipText": {
+    "message": "If sidebar doesn't appear, ensure you're on a supported AI Chat page.",
+    "description": "Tip text"
+  },
+  "footerText": {
+    "message": "AIChatHelper v1.0.0",
+    "description": "Footer text with version information"
+  },
+  "sidebarTitle": {
+    "message": "Conversation History",
+    "description": "Sidebar title"
+  },
+  "toggleTooltip": {
+    "message": "Collapse/Expand",
+    "description": "Tooltip for toggle button"
+  },
+  "loadingText": {
+    "message": "Loading...",
+    "description": "Text displayed when loading messages"
+  },
+  "emptyMessages": {
+    "message": "No messages yet",
+    "description": "Text displayed when there are no messages"
+  },
+  "platformText": {
+    "message": "Platform: $1",
+    "description": "Text displayed in sidebar footer with platform name",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
+  },
+  "enabled": {
+    "message": "Enabled",
+    "description": "Status text for enabled sidebar"
+  },
+  "disabled": {
+    "message": "Disabled",
+    "description": "Status text for disabled sidebar"
+  },
+  "unsupportedPage": {
+    "message": "Unsupported Page",
+    "description": "Text displayed when page is not supported"
+  },
+  "userRole": {
+    "message": "User",
+    "description": "Role text for user messages"
+  },
+  "aiRole": {
+    "message": "AI",
+    "description": "Role text for AI messages"
+  },
+  "sidebarNavTitle": {
+    "message": "Dialogue Navigation",
+    "description": "Sidebar navigation title"
+  }
+}

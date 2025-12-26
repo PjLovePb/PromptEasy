@@ -1,0 +1,128 @@
+{
+  "extName": {
+    "message": "AIChatHelper",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "快速导航 AI Chat 对话历史。在侧边栏中显示用户问题列表，点击可跳转到对应位置。",
+    "description": "Extension description"
+  },
+  "extTitle": {
+    "message": "AIChatHelper - 快速导航",
+    "description": "Extension title"
+  },
+  "popupTitle": {
+    "message": "AIChatHelper",
+    "description": "Popup window title"
+  },
+  "platformLabel": {
+    "message": "平台:",
+    "description": "Label for platform information"
+  },
+  "messagesLabel": {
+    "message": "消息:",
+    "description": "Label for message count"
+  },
+  "statusLabel": {
+    "message": "状态:",
+    "description": "Label for sidebar status"
+  },
+  "detecting": {
+    "message": "检测中...",
+    "description": "Text displayed when detecting platform"
+  },
+  "hideSidebar": {
+    "message": "隐藏侧边栏",
+    "description": "Button text to hide sidebar"
+  },
+  "showSidebar": {
+    "message": "显示侧边栏",
+    "description": "Button text to show sidebar"
+  },
+  "refreshMessages": {
+    "message": "刷新消息",
+    "description": "Button text to refresh messages"
+  },
+  "usageTitle": {
+    "message": "使用说明",
+    "description": "Title for usage section"
+  },
+  "usage1": {
+    "message": "在支持的 AI Chat 页面自动显示侧边栏",
+    "description": "First usage instruction"
+  },
+  "usage2": {
+    "message": "点击列表中的问题快速跳转到对话位置",
+    "description": "Second usage instruction"
+  },
+  "usage3": {
+    "message": "支持 ChatGPT、Gemini、Claude 等平台",
+    "description": "Third usage instruction"
+  },
+  "usage4": {
+    "message": "侧边栏可折叠以节省空间",
+    "description": "Fourth usage instruction"
+  },
+  "tipTitle": {
+    "message": "提示:",
+    "description": "Title for tip section"
+  },
+  "tipText": {
+    "message": "如果侧边栏未显示，请确保您在支持的 AI Chat 页面上。",
+    "description": "Tip text"
+  },
+  "footerText": {
+    "message": "AIChatHelper v1.0.0",
+    "description": "Footer text with version information"
+  },
+  "sidebarTitle": {
+    "message": "对话历史",
+    "description": "Sidebar title"
+  },
+  "toggleTooltip": {
+    "message": "收起/展开",
+    "description": "Tooltip for toggle button"
+  },
+  "loadingText": {
+    "message": "加载中...",
+    "description": "Text displayed when loading messages"
+  },
+  "emptyMessages": {
+    "message": "暂无消息",
+    "description": "Text displayed when there are no messages"
+  },
+  "platformText": {
+    "message": "平台: $1",
+    "description": "Text displayed in sidebar footer with platform name",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
+  },
+  "enabled": {
+    "message": "已启用",
+    "description": "Status text for enabled sidebar"
+  },
+  "disabled": {
+    "message": "已禁用",
+    "description": "Status text for disabled sidebar"
+  },
+  "unsupportedPage": {
+    "message": "不支持的页面",
+    "description": "Text displayed when page is not supported"
+  },
+  "userRole": {
+    "message": "用户",
+    "description": "Role text for user messages"
+  },
+  "aiRole": {
+    "message": "AI",
+    "description": "Role text for AI messages"
+  },
+  "sidebarNavTitle": {
+    "message": "对话导航",
+    "description": "Sidebar navigation title"
+  }
+}
