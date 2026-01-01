@@ -30,9 +30,15 @@ class SidebarManager {
           <span class="aichathelper-icon">💬</span>
           <span class="aichathelper-name">${chrome.i18n.getMessage('sidebarTitle')}</span>
         </div>
-        <button class="aichathelper-toggle" title="${chrome.i18n.getMessage('toggleTooltip')}">
-          <span class="aichathelper-toggle-icon">−</span>
-        </button>
+        <div class="aichathelper-header-actions">
+          <button class="aichathelper-copy" title="${chrome.i18n.getMessage('copyAllInputs')}">
+            <span class="aichathelper-copy-icon">📋</span>
+            <span class="aichathelper-copy-text">${chrome.i18n.getMessage('copyAllInputs')}</span>
+          </button>
+          <button class="aichathelper-toggle" title="${chrome.i18n.getMessage('toggleTooltip')}">
+            <span class="aichathelper-toggle-icon">−</span>
+          </button>
+        </div>
       </div>
       <div class="aichathelper-content">
         <div class="aichathelper-messages">
@@ -42,6 +48,9 @@ class SidebarManager {
       <div class="aichathelper-footer">
         <small class="aichathelper-platform"></small>
       </div>
+      <button class="aichathelper-expand" title="${chrome.i18n.getMessage('showSidebar')}">
+        <span class="aichathelper-expand-icon">💬</span>
+      </button>
     `;
 
     document.body.appendChild(sidebar);
@@ -61,6 +70,18 @@ class SidebarManager {
     const toggleBtn = this.sidebarElement.querySelector('.aichathelper-toggle');
     if (toggleBtn) {
       toggleBtn.addEventListener('click', () => this.toggleSidebar());
+    }
+
+    // 展开按钮（收起状态下显示）
+    const expandBtn = this.sidebarElement.querySelector('.aichathelper-expand');
+    if (expandBtn) {
+      expandBtn.addEventListener('click', () => this.show());
+    }
+
+    // 复制按钮
+    const copyBtn = this.sidebarElement.querySelector('.aichathelper-copy');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => this.copyAllInputs(copyBtn));
     }
 
     // 消息列表点击事件（事件委托）
@@ -201,6 +222,12 @@ class SidebarManager {
     }
     this.isVisible = true;
     this.sidebarElement.classList.remove('collapsed');
+    const toggleBtn = this.sidebarElement.querySelector('.aichathelper-toggle-icon');
+    if (toggleBtn) {
+      toggleBtn.textContent = '−';
+    }
+    // 保存状态到 storage
+    chrome.storage.local.set({ sidebarVisible: true });
   }
 
   /**
@@ -222,6 +249,80 @@ class SidebarManager {
       this.messageExtractor.extractMessages();
       this.updateSidebar();
     }, 500);
+  }
+
+  /**
+   * 复制所有用户输入
+   * @param {HTMLElement} button - 复制按钮元素
+   */
+  async copyAllInputs(button) {
+    if (!button) return;
+
+    const originalHTML = button.innerHTML;
+    const copyIcon = button.querySelector('.aichathelper-copy-icon');
+    const copyText = button.querySelector('.aichathelper-copy-text');
+
+    // 禁用按钮并显示加载状态
+    button.disabled = true;
+    if (copyIcon) copyIcon.textContent = '⏳';
+    if (copyText) copyText.textContent = chrome.i18n.getMessage('copying');
+
+    try {
+      const messages = this.messageExtractor.getMessages();
+      const userInputs = messages.map(msg => msg.userText).filter(text => text && text.length > 0);
+
+      if (userInputs.length === 0) {
+        if (copyIcon) copyIcon.textContent = '⚠️';
+        if (copyText) copyText.textContent = chrome.i18n.getMessage('noInputsFound');
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.disabled = false;
+        }, 2000);
+        return;
+      }
+
+      // 合并所有用户输入
+      const allText = userInputs.join('\n\n');
+
+      // 复制到剪贴板
+      try {
+        await navigator.clipboard.writeText(allText);
+        if (copyIcon) copyIcon.textContent = '✅';
+        if (copyText) copyText.textContent = chrome.i18n.getMessage('copySuccess');
+      } catch (err) {
+        console.error('Failed to copy to clipboard:', err);
+        // Fallback: 使用 document.execCommand
+        const textArea = document.createElement('textarea');
+        textArea.value = allText;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          if (copyIcon) copyIcon.textContent = '✅';
+          if (copyText) copyText.textContent = chrome.i18n.getMessage('copySuccess');
+        } catch (e) {
+          if (copyIcon) copyIcon.textContent = '❌';
+          if (copyText) copyText.textContent = chrome.i18n.getMessage('copyFailed');
+        }
+        document.body.removeChild(textArea);
+      }
+
+      // 2秒后恢复按钮状态
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+      }, 2000);
+    } catch (error) {
+      console.error('Error copying inputs:', error);
+      if (copyIcon) copyIcon.textContent = '❌';
+      if (copyText) copyText.textContent = chrome.i18n.getMessage('copyFailed');
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+      }, 2000);
+    }
   }
 
   /**

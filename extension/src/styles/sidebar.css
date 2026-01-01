@@ -45,7 +45,8 @@
 
 /* 收起状态 */
 #aichathelper-sidebar.collapsed {
-  width: 40px;
+  width: 0;
+  overflow: visible;
   animation: slideOut 0.3s ease-out;
 }
 
@@ -71,6 +72,16 @@
   flex-shrink: 0;
 }
 
+.aichathelper-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#aichathelper-sidebar.collapsed .aichathelper-header-actions {
+  display: none;
+}
+
 .aichathelper-title {
   display: flex;
   align-items: center;
@@ -91,6 +102,51 @@
   display: none;
 }
 
+#aichathelper-sidebar.collapsed .aichathelper-header,
+#aichathelper-sidebar.collapsed .aichathelper-content,
+#aichathelper-sidebar.collapsed .aichathelper-footer {
+  display: none;
+}
+
+/* 复制按钮 */
+.aichathelper-copy {
+  background: none;
+  border: 1px solid var(--aichathelper-border);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: var(--aichathelper-text);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.aichathelper-copy:hover {
+  background-color: var(--aichathelper-hover);
+  border-color: var(--aichathelper-primary);
+  color: var(--aichathelper-primary);
+}
+
+.aichathelper-copy:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.aichathelper-copy-icon {
+  font-size: 14px;
+}
+
+.aichathelper-copy-text {
+  font-size: 12px;
+}
+
+#aichathelper-sidebar.collapsed .aichathelper-copy {
+  display: none;
+}
+
 /* 切换按钮 */
 .aichathelper-toggle {
   background: none;
@@ -107,6 +163,41 @@
 
 .aichathelper-toggle:hover {
   color: var(--aichathelper-primary);
+}
+
+/* 展开按钮（收起状态下显示） */
+.aichathelper-expand {
+  display: none;
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 60px;
+  background-color: var(--aichathelper-primary);
+  border: none;
+  border-radius: 8px 0 0 8px;
+  cursor: pointer;
+  color: white;
+  font-size: 20px;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+  z-index: 999998;
+  align-items: center;
+  justify-content: center;
+}
+
+.aichathelper-expand:hover {
+  background-color: var(--aichathelper-primary-dark);
+  width: 45px;
+}
+
+.aichathelper-expand-icon {
+  font-size: 20px;
+}
+
+#aichathelper-sidebar.collapsed .aichathelper-expand {
+  display: flex;
 }
 
 /* 侧边栏内容区域 */
