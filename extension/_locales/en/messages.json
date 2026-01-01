@@ -124,5 +124,25 @@
   "sidebarNavTitle": {
     "message": "Dialogue Navigation",
     "description": "Sidebar navigation title"
+  },
+  "copyAllInputs": {
+    "message": "Copy All Inputs",
+    "description": "Button text to copy all user inputs"
+  },
+  "copying": {
+    "message": "Copying...",
+    "description": "Text displayed when copying inputs"
+  },
+  "copySuccess": {
+    "message": "Copied!",
+    "description": "Text displayed when copy is successful"
+  },
+  "copyFailed": {
+    "message": "Copy Failed",
+    "description": "Text displayed when copy fails"
+  },
+  "noInputsFound": {
+    "message": "No Inputs Found",
+    "description": "Text displayed when no user inputs are found"
   }
 }

@@ -331,7 +331,12 @@
         if (request.action === 'reload') {
           init();
           sendResponse({ success: true });
+        } else if (request.action === 'getAllUserInputs') {
+          // Get all user inputs from Google AI Studio
+          const userMessages = extractUserMessagesFromScrollbar();
+          sendResponse({ userInputs: userMessages });
         }
+        return true; // Keep the message channel open for async response
       });
 
       // Listen for URL changes (to detect dialogue switching)
@@ -451,7 +456,13 @@
           messageCount: window.messageExtractor.getMessageCount(),
           sidebarVisible: window.sidebarManager.isVisible
         });
+      } else if (request.action === 'getAllUserInputs') {
+        // Get all user inputs
+        const messages = window.messageExtractor.getMessages();
+        const userInputs = messages.map(msg => msg.userText).filter(text => text && text.length > 0);
+        sendResponse({ userInputs: userInputs });
       }
+      return true; // Keep the message channel open for async response
     });
 
     // 9. Periodically refresh messages (check every 5 seconds)

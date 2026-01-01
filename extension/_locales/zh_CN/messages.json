@@ -124,5 +124,25 @@
   "sidebarNavTitle": {
     "message": "对话导航",
     "description": "Sidebar navigation title"
+  },
+  "copyAllInputs": {
+    "message": "复制所有输入",
+    "description": "Button text to copy all user inputs"
+  },
+  "copying": {
+    "message": "复制中...",
+    "description": "Text displayed when copying inputs"
+  },
+  "copySuccess": {
+    "message": "已复制！",
+    "description": "Text displayed when copy is successful"
+  },
+  "copyFailed": {
+    "message": "复制失败",
+    "description": "Text displayed when copy fails"
+  },
+  "noInputsFound": {
+    "message": "未找到输入",
+    "description": "Text displayed when no user inputs are found"
   }
 }
