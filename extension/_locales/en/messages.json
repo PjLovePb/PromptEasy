@@ -4,7 +4,7 @@
     "description": "Extension name"
   },
   "extDescription": {
-    "message": "Quickly navigate AI Chat conversation history. Displays a list of user questions in a sidebar, click to jump to the corresponding position.",
+    "message": "Navigate AI Chat conversation history. Lists user questions in sidebar, click to jump to position.",
     "description": "Extension description"
   },
   "extTitle": {
